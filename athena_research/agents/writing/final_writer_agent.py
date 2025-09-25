@@ -157,8 +157,16 @@ class FinalWriterAgent(BaseAgent):
 
         self.add_message(AgentMessage(role="user", content=summary_prompt))
 
-        # Simplified summary generation
-        summary = f"""**Executive Summary**
+        # Generate summary using LLM
+        try:
+            summary = await self.generate_llm_response(
+                prompt=summary_prompt,
+                system_message="You are an expert research writer. Generate clear, professional executive summaries."
+            )
+        except Exception as e:
+            print(f"LLM generation failed for summary, using fallback: {e}")
+            # Fallback summary generation
+            summary = f"""**Executive Summary**
 
 This comprehensive analysis of {topic} examines multiple dimensions through systematic research across various authoritative sources. The investigation covers {len(sections)} key areas, providing insights into current developments, applications, and future implications.
 

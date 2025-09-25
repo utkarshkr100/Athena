@@ -31,8 +31,14 @@ from .agents import (
     ResearchPlan, SectionContent, Citation
 )
 from .data_sources import (
-    AzureSearchTool, TavilySearchTool, BingSearchTool
+    TavilySearchTool, BingSearchTool
 )
+
+# Optional Azure import
+try:
+    from .data_sources import AzureSearchTool
+except ImportError:
+    AzureSearchTool = None
 from .memory import (
     MemoryManager, ChromaMemoryStore, RedisCacheStore,
     MemoryItem, MemoryQuery
@@ -63,7 +69,6 @@ __all__ = [
     "Citation",
 
     # Data sources
-    "AzureSearchTool",
     "TavilySearchTool",
     "BingSearchTool",
 
@@ -87,6 +92,10 @@ __all__ = [
     # Configuration
     "settings"
 ]
+
+# Add AzureSearchTool if available
+if AzureSearchTool is not None:
+    __all__.append("AzureSearchTool")
 
 class AthenaResearchSystem:
     """Main interface for the Athena Research System"""
@@ -124,7 +133,7 @@ class AthenaResearchSystem:
     def _initialize_search_tools(self, azure_config, tavily_key, bing_key):
         """Initialize available search tools"""
         try:
-            if azure_config or settings.azure_search_api_key:
+            if (azure_config or settings.azure_search_api_key) and AzureSearchTool is not None:
                 self.search_tools.append(AzureSearchTool())
         except Exception as e:
             print(f"Azure Search not available: {e}")

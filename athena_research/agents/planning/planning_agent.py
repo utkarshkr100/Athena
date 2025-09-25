@@ -56,9 +56,23 @@ class PlanningAgent(BaseAgent):
         # Add message to conversation history
         self.add_message(AgentMessage(role="user", content=planning_prompt))
 
-        # This would integrate with AG2's LLM client
-        # For now, we'll create a structured plan
-        plan = await self._create_structured_plan(topic, template)
+        # Generate plan using LLM
+        try:
+            llm_response = await self.generate_llm_response(
+                prompt=planning_prompt,
+                system_message="You are a research planning expert. Generate structured research plans in JSON format."
+            )
+
+            # Try to parse JSON response
+            try:
+                plan_data = json.loads(llm_response)
+                plan = ResearchPlan(**plan_data)
+            except (json.JSONDecodeError, TypeError, ValueError):
+                # Fallback to structured plan if JSON parsing fails
+                plan = await self._create_structured_plan(topic, template)
+        except Exception as e:
+            print(f"LLM generation failed, using fallback: {e}")
+            plan = await self._create_structured_plan(topic, template)
 
         self.add_message(AgentMessage(role="assistant", content=json.dumps(plan.dict())))
 

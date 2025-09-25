@@ -1,0 +1,19 @@
+# Essential packages for Athena with Gemini Flash
+google-generativeai>=0.8.0
+tavily-python>=0.7.0
+python-dotenv>=1.0.0
+pydantic-settings>=2.0.0
+pydantic>=2.5.0
+aiohttp>=3.9.0
+
+# Optional: Only install if you need Azure OpenAI
+# openai>=1.12.0
+
+# Optional: Only install if you need Azure Search
+# azure-search-documents>=11.4.0
+# azure-identity>=1.15.0
+
+# Optional: Only install if you need advanced memory
+# redis>=5.0.0
+# chromadb>=0.4.0
+# sentence-transformers>=2.2.0

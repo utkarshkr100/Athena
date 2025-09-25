@@ -33,3 +33,34 @@ class BaseAgent(ABC):
 
     def clear_history(self):
         self.conversation_history = []
+
+    async def generate_llm_response(
+        self,
+        prompt: str,
+        system_message: Optional[str] = None,
+        temperature: Optional[float] = None,
+        max_tokens: Optional[int] = None
+    ) -> str:
+        """Generate a response using the configured LLM"""
+        from ..utils.llm_client import llm_client
+        from ..config import settings
+
+        messages = []
+
+        if system_message:
+            messages.append({"role": "system", "content": system_message})
+
+        # Add conversation history
+        messages.extend(self.get_conversation_context())
+
+        # Add current prompt
+        messages.append({"role": "user", "content": prompt})
+
+        response = await llm_client.generate_response(
+            messages=messages,
+            temperature=temperature or self.temperature,
+            max_tokens=max_tokens or settings.max_tokens,
+            model=self.model
+        )
+
+        return response
