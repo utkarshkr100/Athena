@@ -1,0 +1,37 @@
+# Core framework - using AG2 (AutoGen successor)
+ag2==0.4.0
+ag2-autogen==0.4.0
+
+# LangChain for additional tools
+langchain==0.2.0
+langchain-community==0.2.0
+langchain-openai==0.1.0
+
+# Azure integrations
+azure-search-documents==11.4.0
+azure-identity==1.15.0
+openai==1.12.0
+
+# Web search
+tavily-python==0.3.0
+requests==2.31.0
+
+# Memory and vector stores
+redis==5.0.1
+chromadb==0.4.22
+sentence-transformers==2.2.2
+
+# Memory management (optional advanced)
+mem0ai==0.1.0
+
+# Utilities
+python-dotenv==1.0.0
+pydantic==2.5.0
+asyncio-throttle==1.0.2
+aiohttp==3.9.0
+
+# Development
+pytest==7.4.0
+pytest-asyncio==0.21.0
+black==23.12.0
+flake8==7.0.0
